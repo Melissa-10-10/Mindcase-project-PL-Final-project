@@ -266,3 +266,4 @@ EXCEPTION
         RAISE;
 END MOOD_ANALYSIS_PRC;
 ```
+![IMAGE](https://github.com/Melissa-10-10/Mindcase-project-PL-Final-project/blob/1b5accd3dd3affb1434332408728b3be8defff1d/FUNCTIONS.PNG)
