@@ -139,3 +139,4 @@ ORDER BY
     ml."TIMESTAMP" DESC
 FETCH FIRST 10 ROWS ONLY;
 ```
+![IMAGE](https://github.com/Melissa-10-10/Mindcase-project-PL-Final-project/blob/da2f38ca5b6c69ddb92d796591ee91adc368cf98/testing%20join%20in.PNG)
