@@ -304,3 +304,27 @@ END archive_old_mood_logs;
 ```
 ![IMAGE](https://github.com/Melissa-10-10/Mindcase-project-PL-Final-project/blob/6a4feea2365334ba93770308c6767c49a1ed9da6/cursor.PNG)
 
+***WINDOW FUNCTION***
+
+```SQL
+SELECT
+    u.USERNAME,
+    ml."TIMESTAMP",
+    ml.MOOD_VALUE AS Current_Mood,
+    LAG(ml.MOOD_VALUE, 1, 0) OVER (
+        PARTITION BY ml.USER_ID 
+        ORDER BY ml."TIMESTAMP"
+    ) AS Previous_Mood,
+    ml.MOOD_VALUE - LAG(ml.MOOD_VALUE, 1, 0) OVER (
+        PARTITION BY ml.USER_ID 
+        ORDER BY ml."TIMESTAMP"
+    ) AS Mood_Change
+FROM
+    MOOD_LOG ml
+JOIN
+    USER_T u ON ml.USER_ID = u.USER_ID
+ORDER BY
+    u.USERNAME, ml."TIMESTAMP"
+FETCH FIRST 10 ROWS ONLY;
+```
+
