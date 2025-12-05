@@ -11,9 +11,13 @@ self-assessments, and receive tailored recommendations to improve their mental h
 data analysis to identify mood patterns and provide timely advice or professional guidance. This
 system encourages early mental health awareness and self-care.
 
-'''sql
 
-CREATE OR REPLACE FUNCTION IS_ACTION_ALLOWED (
+
+
+
+
+```sql
+ CREATE OR REPLACE FUNCTION IS_ACTION_ALLOWED (
     p_action_date IN DATE -- Parameter not used in simulation
 )
 RETURN BOOLEAN
@@ -23,4 +27,4 @@ BEGIN
     RETURN TRUE; 
 END IS_ACTION_ALLOWED;
 /
-'''
+```
