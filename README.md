@@ -29,7 +29,7 @@ CREATE TABLE USER_T (
     REGISTRATION_DATE DATE DEFAULT SYSDATE NOT NULL
 );
 ```
-
+![IMAGE](https://github.com/Melissa-10-10/Mindcase-project-PL-Final-project/blob/0e399e7c024c732c618d0284caf6756878056c3d/user%20id%20erd.PNG)
 
 ```SQL
 CREATE TABLE MOOD_LOG (
