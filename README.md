@@ -347,4 +347,4 @@ ORDER BY
     1 DESC, Daily_Score_Rank ASC
 FETCH FIRST 10 ROWS ONLY;
 ```
-
+![IMAGE](https://github.com/Melissa-10-10/Mindcase-project-PL-Final-project/blob/c90dc2a7bf08a07f610c2ceb929fd67c0df931d7/window%20rank.PNG)
