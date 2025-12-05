@@ -94,4 +94,4 @@ SIZE 100M
 AUTOEXTEND ON NEXT 50M 
 MAXSIZE 1000M;
 ```
-
+![IMAGE](https://github.com/Melissa-10-10/Mindcase-project-PL-Final-project/blob/35255bb9ce26368b613ade36c16d1b5fb935262b/table%20space%20created.PNG)
