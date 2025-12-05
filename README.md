@@ -120,3 +120,5 @@ UNION ALL
 SELECT 'MOOD_LOG', COUNT(*) FROM MOOD_LOG;
 ```
 ![IMAGE](https://github.com/Melissa-10-10/Mindcase-project-PL-Final-project/blob/a2a1f12771848cac7252e89744e848a5eedec130/select%20the%20queries.PNG)
+
+![IMAGE](https://github.com/Melissa-10-10/Mindcase-project-PL-Final-project/blob/38012d50af485f47462315a3c51ed69a7db78d7b/testing%20select.PNG)
