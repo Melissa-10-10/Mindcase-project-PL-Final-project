@@ -348,3 +348,32 @@ ORDER BY
 FETCH FIRST 10 ROWS ONLY;
 ```
 ![IMAGE](https://github.com/Melissa-10-10/Mindcase-project-PL-Final-project/blob/c90dc2a7bf08a07f610c2ceb929fd67c0df931d7/window%20rank.PNG)
+
+***PACKAGES***
+
+```SQL
+create or replace PACKAGE MINDCASES_API AS
+
+    -- 1. Calculation Function
+    FUNCTION calculate_historical_average (
+        p_user_id IN NUMBER
+    )
+    RETURN NUMBER;
+
+    -- 2. Validation Function
+    FUNCTION is_valid_mood_range (
+        p_mood_value IN NUMBER
+    )
+    RETURN BOOLEAN;
+
+    -- 3. Lookup Function
+    FUNCTION get_username (
+        p_user_id IN NUMBER
+    )
+    RETURN VARCHAR2;
+
+    -- Procedure with Bulk Cursors
+    PROCEDURE archive_old_mood_logs (p_days_ago IN NUMBER);
+
+END MINDCASES_API;
+```
