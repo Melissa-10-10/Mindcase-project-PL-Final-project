@@ -157,3 +157,30 @@ ORDER BY
     Avg_Mood_Value DESC;
 ```
 ![IMAGE](https://github.com/Melissa-10-10/Mindcase-project-PL-Final-project/blob/93ac95c3ec31a3d1cf5b6483ca3ccb89a6debffa/testing%20group%20by.PNG)
+
+***SUBQUERIES***
+
+```SQL
+SELECT
+    u.USERNAME,
+    T1.User_Avg_Mood
+FROM
+    USER_T u
+JOIN (
+    -- T1: Subquery to calculate each user's average mood
+    SELECT 
+        USER_ID, 
+        AVG(MOOD_VALUE) AS User_Avg_Mood
+    FROM
+        MOOD_LOG
+    GROUP BY
+        USER_ID
+) T1 ON u.USER_ID = T1.USER_ID
+WHERE
+    T1.User_Avg_Mood < (
+        -- Inner Subquery: Calculate the global average mood
+        SELECT AVG(MOOD_VALUE) FROM MOOD_LOG
+    )
+ORDER BY
+    T1.User_Avg_Mood;
+```
