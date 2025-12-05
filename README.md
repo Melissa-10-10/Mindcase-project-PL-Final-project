@@ -184,3 +184,4 @@ WHERE
 ORDER BY
     T1.User_Avg_Mood;
 ```
+![IMAGE](
