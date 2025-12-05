@@ -327,4 +327,4 @@ ORDER BY
     u.USERNAME, ml."TIMESTAMP"
 FETCH FIRST 10 ROWS ONLY;
 ```
-
+![IMAGE](https://github.com/Melissa-10-10/Mindcase-project-PL-Final-project/blob/b71f07b26b8a52115b8c394c9057a50e20b48812/window%20lag.PNG0)
