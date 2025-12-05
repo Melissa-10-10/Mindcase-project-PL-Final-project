@@ -302,5 +302,5 @@ EXCEPTION
     -- ... Exception handling logic ...
 END archive_old_mood_logs;
 ```
-
+![IMAGE](https://github.com/Melissa-10-10/Mindcase-project-PL-Final-project/blob/6a4feea2365334ba93770308c6767c49a1ed9da6/cursor.PNG)
 
