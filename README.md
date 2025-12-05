@@ -105,3 +105,4 @@ Memory parameter creation
 ALTER SYSTEM SET SGA_TARGET = 800M SCOPE=BOTH;
 ALTER SYSTEM SET PGA_AGGREGATE_TARGET = 200M SCOPE=BOTH;
 ```
+![image](https://github.com/Melissa-10-10/Mindcase-project-PL-Final-project/blob/fdca16ed70b187a40d2be3fa52c210c7fdd3277c/memory%20parameter.PNG)
