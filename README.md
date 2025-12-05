@@ -185,3 +185,84 @@ ORDER BY
     T1.User_Avg_Mood;
 ```
 ![IMAGE](https://github.com/Melissa-10-10/Mindcase-project-PL-Final-project/blob/f6d03590b898d2ff05bac1b85e6c30c310ef3995/testing%20subqueries.PNG)
+
+##DATABASE INTERACTION AND TRANSACTIONS
+
+***PROCEDURES***
+
+```SQL
+create or replace PROCEDURE MOOD_ANALYSIS_PRC (
+    p_user_id IN NUMBER,
+    p_current_mood IN NUMBER
+)
+AS
+    v_history_mood_avg NUMBER(5, 2);
+    v_calculated_score NUMBER(5, 2);
+    v_risk_level       VARCHAR2(20);
+    v_rec_id           RECOMMENDATION_T.REC_ID%TYPE;
+    v_guidance_content VARCHAR2(2000);
+
+    -- Custom Exception Defined: Triggered if less than 3 logs are available
+    low_historical_data EXCEPTION;
+    PRAGMA EXCEPTION_INIT(low_historical_data, -20001); 
+    v_log_count NUMBER;
+
+BEGIN
+    -- 1. Recovery Mechanism: Check historical log count (Need minimum 3 logs for robust analysis)
+    SELECT COUNT(*) INTO v_log_count
+    FROM MOOD_LOG
+    WHERE USER_ID = p_user_id;
+
+    IF v_log_count < 3 THEN
+        -- Raise Custom Exception
+        RAISE low_historical_data;
+    END IF;
+
+    -- 2. Predefined Exception Handling: Calculation (Uses a function that handles NO_DATA_FOUND)
+    v_history_mood_avg := MINDCASES_API.calculate_historical_average(p_user_id => p_user_id);
+
+    -- Weighted Score Calculation
+    v_calculated_score := (p_current_mood * 0.40) + (v_history_mood_avg * 0.60);
+
+    -- (REST OF THE PROCEDURE REMAINS THE SAME: Risk assessment and Insertion)
+
+    -- Determine Risk Level and Guidance
+    IF v_calculated_score <= 5.0 THEN
+        v_risk_level := 'HIGH';
+        v_guidance_content := 'High distress detected. Seeking immediate professional guidance recommended.';
+        SELECT REC_ID INTO v_rec_id FROM RECOMMENDATION_T WHERE REC_TYPE = 'Meditation' FETCH FIRST 1 ROW ONLY;
+    ELSE
+        v_risk_level := 'LOW';
+        v_guidance_content := 'Mood stable. Keep up the positive habits!';
+        SELECT REC_ID INTO v_rec_id FROM RECOMMENDATION_T WHERE REC_TYPE = 'Article' FETCH FIRST 1 ROW ONLY;
+    END IF;
+
+    -- Insert records into Fact Tables
+    INSERT INTO ASSESSMENT_SCORE (USER_ID, CALCULATED_SCORE) VALUES (p_user_id, v_calculated_score);
+    INSERT INTO MENTAL_HEALTH_RISK (USER_ID, RISK_LEVEL, GUIDANCE_CONTENT) VALUES (p_user_id, v_risk_level, v_guidance_content);
+    INSERT INTO USER_RECOMMENDATION (USER_ID, REC_ID) VALUES (p_user_id, v_rec_id);
+
+EXCEPTION
+    -- Catch Custom Exception
+    WHEN low_historical_data THEN
+        -- Error Logging Implemented
+        INSERT INTO ERROR_LOG (PROCEDURE_NAME, USER_ID, ERROR_CODE, ERROR_MESSAGE)
+        VALUES ('MOOD_ANALYSIS_PRC', p_user_id, '-20001', 'Insufficient historical data for reliable assessment.');
+        COMMIT; 
+
+    -- Catch Predefined Exceptions (E.g., NO_DATA_FOUND in SELECTs above, or DML errors)
+    WHEN NO_DATA_FOUND THEN
+        INSERT INTO ERROR_LOG (PROCEDURE_NAME, USER_ID, ERROR_CODE, ERROR_MESSAGE)
+        VALUES ('MOOD_ANALYSIS_PRC', p_user_id, 'ORA-01403', 'Required reference data (e.g., Recommendation) not found.');
+        COMMIT;
+        -- Continue processing future logs (Recovery: Silent failure for this log)
+
+    WHEN OTHERS THEN
+        -- Catch All Other Errors
+        INSERT INTO ERROR_LOG (PROCEDURE_NAME, USER_ID, ERROR_CODE, ERROR_MESSAGE)
+        VALUES ('MOOD_ANALYSIS_PRC', p_user_id, SQLCODE, SUBSTR(SQLERRM, 1, 4000));
+        COMMIT;
+        -- Recovery: Log error and allow transaction to fail gracefully
+        RAISE;
+END MOOD_ANALYSIS_PRC;
+```
