@@ -140,3 +140,19 @@ ORDER BY
 FETCH FIRST 10 ROWS ONLY;
 ```
 ![IMAGE](https://github.com/Melissa-10-10/Mindcase-project-PL-Final-project/blob/da2f38ca5b6c69ddb92d796591ee91adc368cf98/testing%20join%20in.PNG)
+
+***GROUP BY***
+```SQL
+SELECT
+    u.USERNAME,
+    COUNT(ml.LOG_ID) AS Total_Mood_Logs,
+    ROUND(AVG(ml.MOOD_VALUE), 2) AS Avg_Mood_Value
+FROM
+    USER_T u
+LEFT JOIN
+    MOOD_LOG ml ON u.USER_ID = ml.USER_ID
+GROUP BY
+    u.USERNAME
+ORDER BY
+    Avg_Mood_Value DESC;
+```
