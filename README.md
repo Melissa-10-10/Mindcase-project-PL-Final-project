@@ -156,3 +156,4 @@ GROUP BY
 ORDER BY
     Avg_Mood_Value DESC;
 ```
+![IMAGE](https://github.com/Melissa-10-10/Mindcase-project-PL-Final-project/blob/93ac95c3ec31a3d1cf5b6483ca3ccb89a6debffa/testing%20group%20by.PNG)
