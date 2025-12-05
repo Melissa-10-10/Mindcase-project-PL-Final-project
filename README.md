@@ -268,6 +268,39 @@ END MOOD_ANALYSIS_PRC;
 ```
 ![IMAGE](https://github.com/Melissa-10-10/Mindcase-project-PL-Final-project/blob/1b5accd3dd3affb1434332408728b3be8defff1d/FUNCTIONS.PNG)
 
-***FUNCTION***
+***CURSOR***
+```SQL
+-- 2. Open and Fetch Loop (Fetching 1000 records at a time)
+    OPEN C_LOGS_TO_ARCHIVE;
+    LOOP
+        FETCH C_LOGS_TO_ARCHIVE BULK COLLECT INTO v_logs_to_archive LIMIT 1000;
+
+        EXIT WHEN v_logs_to_archive.COUNT = 0; -- Exit when no more records are fetched
+
+        -- 3. Bulk DML (Archiving): Using FORALL
+        FORALL i IN v_logs_to_archive.FIRST..v_logs_to_archive.LAST
+            INSERT INTO MOOD_LOG_ARCHIVE (LOG_ID, USER_ID, MOOD_VALUE, "TIMESTAMP")
+            VALUES (v_logs_to_archive(i).LOG_ID, v_logs_to_archive(i).USER_ID, 
+                    v_logs_to_archive(i).MOOD_VALUE, v_logs_to_archive(i)."TIMESTAMP");
+        
+        -- 4. Bulk DML (Deletion): Using FORALL
+        FORALL i IN v_logs_to_archive.FIRST..v_logs_to_archive.LAST
+            DELETE FROM MOOD_LOG
+            WHERE LOG_ID = v_logs_to_archive(i).LOG_ID;
+            
+        v_rows_deleted := v_rows_deleted + SQL%ROWCOUNT;
+        
+        -- Clear collection for next batch
+        v_logs_to_archive.DELETE; 
+        
+    END LOOP;
+
+    CLOSE C_LOGS_TO_ARCHIVE;
+    -- ... COMMIT and output lines ...
+
+EXCEPTION
+    -- ... Exception handling logic ...
+END archive_old_mood_logs;
+```
 
 
