@@ -184,4 +184,4 @@ WHERE
 ORDER BY
     T1.User_Avg_Mood;
 ```
-![IMAGE](
+![IMAGE](https://github.com/Melissa-10-10/Mindcase-project-PL-Final-project/blob/f6d03590b898d2ff05bac1b85e6c30c310ef3995/testing%20subqueries.PNG)
