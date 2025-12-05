@@ -305,7 +305,7 @@ END archive_old_mood_logs;
 ![IMAGE](https://github.com/Melissa-10-10/Mindcase-project-PL-Final-project/blob/6a4feea2365334ba93770308c6767c49a1ed9da6/cursor.PNG)
 
 ***WINDOW FUNCTION***
-
+**LAG**
 ```SQL
 SELECT
     u.USERNAME,
@@ -328,3 +328,23 @@ ORDER BY
 FETCH FIRST 10 ROWS ONLY;
 ```
 ![IMAGE](https://github.com/Melissa-10-10/Mindcase-project-PL-Final-project/blob/b71f07b26b8a52115b8c394c9057a50e20b48812/window%20lag.PNG0)
+
+**RANK**
+```SQL
+SELECT
+    a.EVALUATION_TIMESTAMP,
+    u.USERNAME,
+    a.CALCULATED_SCORE,
+    RANK() OVER (
+        PARTITION BY TRUNC(a.EVALUATION_TIMESTAMP)
+        ORDER BY a.CALCULATED_SCORE ASC
+    ) AS Daily_Score_Rank
+FROM
+    ASSESSMENT_SCORE a
+JOIN
+    USER_T u ON a.USER_ID = u.USER_ID
+ORDER BY
+    1 DESC, Daily_Score_Rank ASC
+FETCH FIRST 10 ROWS ONLY;
+```
+
