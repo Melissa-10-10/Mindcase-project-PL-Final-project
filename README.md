@@ -86,6 +86,8 @@ CREATE TABLE USER_RECOMMENDATION (
 
 ## DATABASE CREATION
 
+Table space creation
+
 ```SQL
 
 CREATE TABLESPACE MINDCASES_DATA
@@ -95,3 +97,11 @@ AUTOEXTEND ON NEXT 50M
 MAXSIZE 1000M;
 ```
 ![IMAGE](https://github.com/Melissa-10-10/Mindcase-project-PL-Final-project/blob/35255bb9ce26368b613ade36c16d1b5fb935262b/table%20space%20created.PNG)
+
+Memory parameter creation
+
+```sql
+-- DDL to set the memory parameters
+ALTER SYSTEM SET SGA_TARGET = 800M SCOPE=BOTH;
+ALTER SYSTEM SET PGA_AGGREGATE_TARGET = 200M SCOPE=BOTH;
+```
