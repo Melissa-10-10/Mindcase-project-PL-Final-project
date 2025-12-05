@@ -87,6 +87,7 @@ CREATE TABLE USER_RECOMMENDATION (
 ## DATABASE CREATION
 
 Table space creation
+Tablespaces act as logical containers that map to physical data files on disk, allowing for efficient organization and management of your application's data.
 
 ```SQL
 
@@ -99,6 +100,7 @@ MAXSIZE 1000M;
 ![IMAGE](https://github.com/Melissa-10-10/Mindcase-project-PL-Final-project/blob/35255bb9ce26368b613ade36c16d1b5fb935262b/table%20space%20created.PNG)
 
 Memory parameter creation
+Memory parameters govern the memory areas of the Oracle instance, which directly affects the speed of data processing and transaction execution.
 
 ```sql
 -- DDL to set the memory parameters
