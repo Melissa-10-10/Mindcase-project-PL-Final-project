@@ -379,3 +379,7 @@ END MINDCASES_API;
 ```
 
 ![IMAGE](https://github.com/Melissa-10-10/Mindcase-project-PL-Final-project/blob/d8156e8c029ed11716a03f0f75fb78cc684689e8/Packages.PNG)
+
+##ADVANCED PROGRAMMING AND AUDITING
+
+
