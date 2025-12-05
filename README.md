@@ -13,18 +13,8 @@ system encourages early mental health awareness and self-care.
 
 
 
+## BUSINESS PROCESS MODELING
 
+![IMAGE](https://github.com/Melissa-10-10/Mindcase-project-PL-Final-project/blob/6f0ea6ae686bf4216f452c8746405ca571597ede/BPMN.jpg)
 
-
-```sql
- CREATE OR REPLACE FUNCTION IS_ACTION_ALLOWED (
-    p_action_date IN DATE -- Parameter not used in simulation
-)
-RETURN BOOLEAN
-AS
-BEGIN
-    -- *** SIMULATION MODE: FORCING WEEKEND ACCESS ALLOWED ***
-    RETURN TRUE; 
-END IS_ACTION_ALLOWED;
-/
-```
+MindCase collects user mood data, validates login credentials, and stores all information in the database. The system retrieves the user’s mood history, analyzes emotional patterns, and generates personalized mental-health recommendations through its Recommendation Engine. These recommendations are then delivered back to the user. In high-risk cases, the system alerts a mental-health professional, who provides guidance that is sent directly to the user through the platform.
