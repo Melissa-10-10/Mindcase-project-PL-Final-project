@@ -545,3 +545,5 @@ END;
 /
 ```
 ![image](https://github.com/Melissa-10-10/Mindcase-project-PL-Final-project/blob/fe6a937db99b509407a5531959c8f63175f5e28e/weekend%20success.PNG)
+
+![image](https://github.com/Melissa-10-10/Mindcase-project-PL-Final-project/blob/c8f8a0569049af0503989e6ef88839fff1afd235/weekend%20and%20function%20testing.PNG)
