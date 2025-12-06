@@ -459,6 +459,7 @@ END;
 /
 ```
 
+![image](https://github.com/Melissa-10-10/Mindcase-project-PL-Final-project/blob/6de62d4589cc65e7e642c6f1042846894239fd8a/trigger%20on%20salary%20table.PNG)
 ***COMPOUND TRIGGER***
 
 ```SQL
