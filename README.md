@@ -410,3 +410,4 @@ CREATE TABLE AUDIT_LOG_TBL (
     RESTRICTION_REASON VARCHAR2(255) 
 );
 ```
+![IMAGE](https://github.com/Melissa-10-10/Mindcase-project-PL-Final-project/blob/0735631a9295811a1ec1b30366d5833ee25a6d27/audit%20log.PNG)
