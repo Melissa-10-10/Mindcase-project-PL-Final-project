@@ -442,3 +442,100 @@ BEGIN
 END IS_ACTION_ALLOWED;
 /
 ```
+
+***SIMPLE TRIGGER***
+
+```SQL
+CREATE OR REPLACE TRIGGER TRG_SALARY_FLOOR
+BEFORE INSERT OR UPDATE OF SALARY ON EMPLOYEE_SALARY
+FOR EACH ROW -- Executes once for every row affected by the DML statement
+BEGIN
+    -- Ensure the salary is never set below 50,000
+    IF :NEW.SALARY < 50000 THEN
+        -- Raise a standard exception to block the change for this row
+        RAISE_APPLICATION_ERROR(-20003, 'Salary must be at least 50,000.');
+    END IF;
+END;
+/
+```
+
+***COMPOUND TRIGGER***
+
+```SQL
+CREATE OR REPLACE TRIGGER TRG_EMP_SALARY_RESTRICTION
+FOR INSERT OR UPDATE OR DELETE ON EMPLOYEE_SALARY
+COMPOUND TRIGGER
+
+    -- Variables to hold audit data accessible by all sections
+    TYPE t_audit_rec IS RECORD (
+        dml_type          AUDIT_LOG_TBL.DML_TYPE%TYPE,
+        access_granted    CHAR(1),
+        restriction_reason AUDIT_LOG_TBL.RESTRICTION_REASON%TYPE
+    );
+    v_audit_data t_audit_rec;
+
+    restricted_access EXCEPTION;
+    PRAGMA EXCEPTION_INIT(restricted_access, -20002);
+
+    ---------------------------------------------------
+    -- BEFORE STATEMENT Section (Restriction Check)
+    ---------------------------------------------------
+    BEFORE STATEMENT IS
+    BEGIN
+        -- Calls the restricted function IS_ACTION_ALLOWED
+        IF NOT IS_ACTION_ALLOWED(SYSDATE) THEN
+            -- Determine exact reason (Weekday/Holiday) for logging and prepare v_audit_data
+            -- ... (Logic to set v_audit_data.restriction_reason) ...
+            
+            -- Raise exception to block the DML *before* any rows are processed
+            RAISE restricted_access;
+
+        ELSE
+            -- Prepare audit log data for allowed action
+            v_audit_data.access_granted := 'Y';
+            v_audit_data.restriction_reason := 'Access Allowed (Weekend)';
+        END IF;
+
+    END BEFORE STATEMENT;
+
+    ---------------------------------------------------
+    -- AFTER STATEMENT Section (Audit Logging)
+    ---------------------------------------------------
+    AFTER STATEMENT IS
+    BEGIN
+        -- Determine the DML type (INSERTING, UPDATING, DELETING)
+        -- ... (Logic to set v_audit_data.dml_type) ...
+
+        -- Insert the audit log record for the transaction
+        INSERT INTO AUDIT_LOG_TBL (
+            TARGET_TABLE, DML_TYPE, ACCESS_GRANTED, RESTRICTION_REASON
+        ) VALUES (
+            'EMPLOYEE_SALARY', v_audit_data.dml_type, v_audit_data.access_granted, v_audit_data.restriction_reason
+        );
+
+    END AFTER STATEMENT;
+
+END TRG_EMP_SALARY_RESTRICTION;
+/
+```
+
+***TESTING FUNCTIONS***
+
+```SQL
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('Attempting INSERT on a simulated Weekend...');
+    
+    -- This INSERT succeeds because IS_ACTION_ALLOWED returns TRUE
+    INSERT INTO EMPLOYEE_SALARY (EMP_ID, SALARY, EFFECTIVE_DATE) 
+    VALUES (2, 85000, SYSDATE);
+    
+    COMMIT; 
+    DBMS_OUTPUT.PUT_LINE('✅ DML ALLOWED! Commit successful.');
+
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('🛑 ERROR: DML should have been allowed but failed. ' || SQLERRM);
+        ROLLBACK;
+END;
+/
+```
