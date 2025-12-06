@@ -411,3 +411,34 @@ CREATE TABLE AUDIT_LOG_TBL (
 );
 ```
 ![IMAGE](https://github.com/Melissa-10-10/Mindcase-project-PL-Final-project/blob/0735631a9295811a1ec1b30366d5833ee25a6d27/audit%20log.PNG)
+
+***RESTRICTED FUNCTION***
+
+```SQL
+CREATE OR REPLACE FUNCTION IS_ACTION_ALLOWED (
+    p_action_date IN DATE
+)
+RETURN BOOLEAN
+AS
+    v_day_of_week   VARCHAR2(3) := TO_CHAR(p_action_date, 'DY', 'NLS_DATE_LANGUAGE=ENGLISH'); 
+    v_is_weekday    BOOLEAN := (v_day_of_week IN ('MON', 'TUE', 'WED', 'THU', 'FRI'));
+    v_is_holiday    BOOLEAN := FALSE;
+    v_holiday_count PLS_INTEGER;
+    v_next_month    DATE := ADD_MONTHS(TRUNC(p_action_date, 'MM'), 1); 
+BEGIN
+    -- 1. Check for Public Holiday
+    SELECT COUNT(*) INTO v_holiday_count
+    FROM PUBLIC_HOLIDAYS
+    WHERE TRUNC(HOLIDAY_DATE) = TRUNC(p_action_date)
+      AND HOLIDAY_DATE < v_next_month;
+
+    IF v_holiday_count > 0 THEN
+        v_is_holiday := TRUE;
+    END IF;
+    
+    -- 2. Restriction Logic
+    -- Action is allowed only if the date is NOT a weekday AND NOT a holiday.
+    RETURN NOT (v_is_weekday OR v_is_holiday);
+END IS_ACTION_ALLOWED;
+/
+```
